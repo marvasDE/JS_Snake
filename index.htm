@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>JS</title>
+	<script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+
+	<script type="text/javascript" src="Mapfield.js"></script>
+	<script type="text/javascript" src="Map.js"></script>
+
+	<script type="text/javascript" src="Main.js"></script>
+	
+
+
+	<script type="text/javascript">
+		
+		var main;
+		var map;
+		var timer;
+
+		var params = {
+			fieldHeight: 20,
+			fieldWidth: 20
+		};
+
+		$(document).ready(function() {
+			map = new Map(params);
+
+			//timer = setInterval(function() {
+				map.random()
+			//}, 100);
+
+			console.log('h: ' + map.height);
+			console.log('w: ' + map.width);
+
+			console.log(map.height == parseInt($(window).height() / params.fieldHeight));
+			console.log(map.width == parseInt($(window).width() / params.fieldWidth));
+		});
+
+
+		function randomizer() {
+			
+		}
+	</script>
+</head>
+
+<body>
+
+</body>
+
+</html>
