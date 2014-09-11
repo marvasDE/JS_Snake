@@ -53,7 +53,7 @@ Map.prototype.random = function() {
 * @const
 * @type {Array}
 */
-Map.prototype.COLORS = ["black", "white", "yellow", "green", "red", "blue", "violet", "gray", "brown"];
+Map.prototype.COLORS = ["black", "white", "yellow", "green", "red", "blue", "violet", "gray", "brown", 'gold', 'lila', 'lightblue'];
 
 /**
 * @description get a random color of this.colors

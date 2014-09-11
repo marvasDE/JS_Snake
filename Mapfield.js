@@ -2,6 +2,8 @@
 * @constructor MapField
 * @param x {number}
 * @param y {number}
+* @param height {number}
+* @param width {number}
 */
 function MapField(x, y, height, width) {
 
