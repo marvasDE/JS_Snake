@@ -2,9 +2,9 @@
 <html>
     <head>
         <title>JS</title>
-        <script type="text/javascript" src="libs/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="bin/extern.js"></script>
 
-        <script type="text/javascript" src="compiled.js"></script>	
+        <script type="text/javascript" src="bin/compiled.js"></script>	
 
         <script type="text/javascript">
 
@@ -31,22 +31,23 @@
                     map.random()
                 }, 100);
 
-                console.log('h: ' + map.height);
-                console.log('w: ' + map.width);
-
-                console.log(map.height == parseInt($(window).height() / params.fieldHeight));
-                console.log(map.width == parseInt($(window).width() / params.fieldWidth));
             }
 
 
             function snake() {
                 map = new Map(params);
 
-                for (var borderId in map.getBorderFields()) {
-                    map.getField(borderId).setColor('gray');
-                    map.getField(borderId).refreshCSS();
-                }
+                map.getBorderFields().forEach(function(field) {
+                    field.setColor('gray');
+                    field.refreshCSS();
+                });
 
+                /*
+                 for (var borderId in map.getBorderFields()) {
+                 map.getField(borderId).setColor('gray');
+                 map.getField(borderId).refreshCSS();
+                 }
+                 */
             }
 
         </script>

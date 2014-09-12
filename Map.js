@@ -1,130 +1,148 @@
 /**
-* @constructor Map
-* @parama {object} params
-*/
+ * @constructor Map
+ * @parama {object} params
+ */
 function Map(params) {
 
-	if (params) {
-		if (params.fieldHeight) {
-			this.fieldHeight = parseInt(params.fieldHeight);
-		}
+    if (params) {
+        if (params.fieldHeight) {
+            this.fieldHeight = parseInt(params.fieldHeight);
+        }
 
-		if (params.fieldWidth) {
-			this.fieldWidth = parseInt(params.fieldWidth);
-		}
+        if (params.fieldWidth) {
+            this.fieldWidth = parseInt(params.fieldWidth);
+        }
 
-		if (params.height) {
-			this.height = parseInt(params.height);
-		}
+        if (params.height) {
+            this.height = parseInt(params.height);
+        }
 
-		if (params.width) {
-			this.width = parseInt(params.width);
-		}
+        if (params.width) {
+            this.width = parseInt(params.width);
+        }
 
-	}
+    }
 
-	this.yfields = parseInt(this.height / this.fieldHeight);
-	this.xfields = parseInt(this.width / this.fieldWidth);
+    this.yfields = parseInt(this.height / this.fieldHeight);
+    this.xfields = parseInt(this.width / this.fieldWidth);
 
-	for (var y = 0; y < this.yfields; y++) {
-		for (var x = 0; x < this.xfields; x++) {
-			this.fields.push(new MapField(x, y, this.fieldHeight, this.fieldWidth));
-		}
-	}
+    for (var y = 0; y < this.yfields; y++) {
+        var temp_array = [];
+
+        for (var x = 0; x < this.xfields; x++) {
+            temp_array.push(new MapField(x, y, this.fieldHeight, this.fieldWidth));
+        }
+
+        this.fields.push(temp_array);
+    }
 
 }
 
 
 /**
-* @type {array}
-*/
+ * @type {array}
+ */
 Map.prototype.fields = [];
 
 
 /**
-* @type {number}
-*/
+ * @type {number}
+ */
 Map.prototype.height = $(window).height();
 
 /**
-* @type {number|null}
-*/
+ * @type {number|null}
+ */
 Map.prototype.width = $(window).width();
 
 /**
-* @type {number}
-*/
+ * @type {number}
+ */
 Map.prototype.fieldHeight = 50;
 
 /**
-* @type {number}
-*/
+ * @type {number}
+ */
 Map.prototype.fieldWidth = 50;
 
 /**
-* @type {number|null}
-*/
+ * @type {number|null}
+ */
 Map.prototype.xfields = null;
 
 /**
-* @type {number|null}
-*/
+ * @type {number|null}
+ */
 Map.prototype.yfields = null;
 
 /**
-* @type {array|null}
-*/
+ * @type {array|null}
+ */
 Map.prototype.borderFields = null;
 
 
 /**
-* @param {number}
-* @return {MapField}
-*/
+ * @param {number} id
+ * @return {MapField}
+ */
 Map.prototype.getField = function(id) {
-	return this.fields[id];
-}
+    return this.fields[id];
+};
 
 /**
-* @description set random background-color for all fields
-*/
+ * @description set random background-color for all fields
+ */
 Map.prototype.random = function() {
-	for(var field in this.fields) {
-		
-		this.fields[field].css.backgroundColor = this.getRandomColor();
+    this.fields.forEach(function(fieldArrays) {
 
-		this.fields[field].refreshCSS();
-	}
-}
+        fieldArrays.forEach(function(field) {
+
+            field.setColor(this.getRandomColor());
+            field.refreshCSS();
+
+        }.bind(this));
+
+    }.bind(this));
+};
 
 /**
-* @const
-* @type {Array}
-*/
+ * @const
+ * @type {Array}
+ */
 Map.prototype.COLORS = ["black", "white", "yellow", "green", "red", "blue", "violet", "gray", "brown", 'gold', 'lila', 'lightblue'];
 
 /**
-* @description get a random color of this.colors
-* @return {string}
-*/
+ * @description get a random color of this.colors
+ * @return {string}
+ */
 Map.prototype.getRandomColor = function() {
-   return this.COLORS[Math.floor(Math.random() * this.COLORS.length)];
-}
+    return this.COLORS[Math.floor(Math.random() * this.COLORS.length)];
+};
 
 Map.prototype.getBorderFields = function() {
 
-	if(this.borderFields != null) {
+    if (this.borderFields === null) {
 
-		this.borderFields = [];
+        this.borderFields = [];
 
-		for(var fieldId in this.fields) {
-			if(this.fields[fieldId].x == 0 || this.fields[fieldId].y == 0 || this.fields[fieldId].x == xfields || this.fields[fieldId].y == y.yfields) {
-				borderFields.push(this.fields[fieldId]);
-			}
-		}
+        this.fields.forEach(function(fieldArrays) {
 
-	}
+            fieldArrays.forEach(function(field) {
 
-	return this.borderFields;
+                if (field.x == 0 || field.y == 0 || field.x == this.xfields - 1 || field.y == this.yfields - 1) {
+                    this.borderFields.push(field);
+                }
 
-}
+            }.bind(this));
+
+            this.borderFields.push(fieldArrays[0]);
+
+            this.borderFields.push(fieldArrays[0]);
+
+        }.bind(this));
+
+    }
+
+    return this.borderFields;
+
+};
