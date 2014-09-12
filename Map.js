@@ -12,30 +12,78 @@ function Map(params) {
 		if (params.fieldWidth) {
 			this.fieldWidth = parseInt(params.fieldWidth);
 		}
+
+		if (params.height) {
+			this.height = parseInt(params.height);
+		}
+
+		if (params.width) {
+			this.width = parseInt(params.width);
+		}
+
 	}
 
-	this.fields = [];
+	this.yfields = parseInt(this.height / this.fieldHeight);
+	this.xfields = parseInt(this.width / this.fieldWidth);
 
-	this.height = parseInt($(window).height() / this.fieldHeight);
-	this.width = parseInt($(window).width() / this.fieldWidth);
-
-	for (var y = 0; y < this.height; y++) {
-		for (var x = 0; x < this.width; x++) {
+	for (var y = 0; y < this.yfields; y++) {
+		for (var x = 0; x < this.xfields; x++) {
 			this.fields.push(new MapField(x, y, this.fieldHeight, this.fieldWidth));
 		}
 	}
 
 }
 
+
 /**
-* @type {number|null}
+* @type {array}
 */
-Map.prototype.fieldHeight = 50;
+Map.prototype.fields = [];
+
+
+/**
+* @type {number}
+*/
+Map.prototype.height = $(window).height();
 
 /**
 * @type {number|null}
 */
+Map.prototype.width = $(window).width();
+
+/**
+* @type {number}
+*/
+Map.prototype.fieldHeight = 50;
+
+/**
+* @type {number}
+*/
 Map.prototype.fieldWidth = 50;
+
+/**
+* @type {number|null}
+*/
+Map.prototype.xfields = null;
+
+/**
+* @type {number|null}
+*/
+Map.prototype.yfields = null;
+
+/**
+* @type {array|null}
+*/
+Map.prototype.borderFields = null;
+
+
+/**
+* @param {number}
+* @return {MapField}
+*/
+Map.prototype.getField = function(id) {
+	return this.fields[id];
+}
 
 /**
 * @description set random background-color for all fields
@@ -61,4 +109,22 @@ Map.prototype.COLORS = ["black", "white", "yellow", "green", "red", "blue", "vio
 */
 Map.prototype.getRandomColor = function() {
    return this.COLORS[Math.floor(Math.random() * this.COLORS.length)];
+}
+
+Map.prototype.getBorderFields = function() {
+
+	if(this.borderFields != null) {
+
+		this.borderFields = [];
+
+		for(var fieldId in this.fields) {
+			if(this.fields[fieldId].x == 0 || this.fields[fieldId].y == 0 || this.fields[fieldId].x == xfields || this.fields[fieldId].y == y.yfields) {
+				borderFields.push(this.fields[fieldId]);
+			}
+		}
+
+	}
+
+	return this.borderFields;
+
 }

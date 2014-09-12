@@ -8,6 +8,8 @@
 function MapField(x, y, height, width) {
 
 	this.id = 'field_' + x + '_' + y;
+	this.x = x;
+	this.y = y;
 
 	if (height) {
 		this.height = height;
@@ -20,9 +22,9 @@ function MapField(x, y, height, width) {
 	this.css = {
     	backgroundColor: 'black',
 		height: this.height,
-		left: x * this.height,
+		left: this.x * this.height,
 		position: "absolute",
-		top: y * this.width,
+		top: this.y * this.width,
 		width: this.width
 	}
 
@@ -76,4 +78,8 @@ MapField.prototype.getJQueryObject = function() {
 	};
 
 	return this.jQueryObject;
+}
+
+MapField.prototype.setColor = function(color) {
+	this.css.backgroundColor = color;
 }

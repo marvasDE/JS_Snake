@@ -1,1 +1,4 @@
 compiler.jar
+/nbproject/private/
+/bin/
+compiled.js

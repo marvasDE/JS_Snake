@@ -1,50 +1,59 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-	<title>JS</title>
-	<script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+    <head>
+        <title>JS</title>
+        <script type="text/javascript" src="libs/jquery-1.11.1.min.js"></script>
 
-	<script type="text/javascript" src="Mapfield.js"></script>
-	<script type="text/javascript" src="Map.js"></script>
+        <script type="text/javascript" src="compiled.js"></script>	
 
-	<script type="text/javascript" src="Main.js"></script>
-	
+        <script type="text/javascript">
 
+            var main;
+            var map;
+            var timer;
 
-	<script type="text/javascript">
-		
-		var main;
-		var map;
-		var timer;
+            var params = {
+                fieldHeight: 20,
+                fieldWidth: 20,
+                height: 500,
+                width: 500
+            };
 
-		var params = {
-			fieldHeight: 20,
-			fieldWidth: 20
-		};
-
-		$(document).ready(function() {
-			map = new Map(params);
-
-			//timer = setInterval(function() {
-				map.random()
-			//}, 100);
-
-			console.log('h: ' + map.height);
-			console.log('w: ' + map.width);
-
-			console.log(map.height == parseInt($(window).height() / params.fieldHeight));
-			console.log(map.width == parseInt($(window).width() / params.fieldWidth));
-		});
+            $(document).ready(function() {
+                snake();
+            });
 
 
-		function randomizer() {
-			
-		}
-	</script>
-</head>
+            function randomizer() {
+                map = new Map(params);
 
-<body>
+                timer = setInterval(function() {
+                    map.random()
+                }, 100);
 
-</body>
+                console.log('h: ' + map.height);
+                console.log('w: ' + map.width);
+
+                console.log(map.height == parseInt($(window).height() / params.fieldHeight));
+                console.log(map.width == parseInt($(window).width() / params.fieldWidth));
+            }
+
+
+            function snake() {
+                map = new Map(params);
+
+                for (var borderId in map.getBorderFields()) {
+                    map.getField(borderId).setColor('gray');
+                    map.getField(borderId).refreshCSS();
+                }
+
+            }
+
+        </script>
+    </head>
+
+    <body>
+
+    </body>
 
 </html>
