@@ -129,15 +129,12 @@ Map.prototype.getBorderFields = function() {
 
             fieldArrays.forEach(function(field) {
 
-                if (field.x == 0 || field.y == 0 || field.x == this.xfields - 1 || field.y == this.yfields - 1) {
+                if (this.isFieldBorder(field)) {
                     this.borderFields.push(field);
                 }
 
             }.bind(this));
 
-            this.borderFields.push(fieldArrays[0]);
-
-            this.borderFields.push(fieldArrays[0]);
 
         }.bind(this));
 
@@ -145,4 +142,19 @@ Map.prototype.getBorderFields = function() {
 
     return this.borderFields;
 
+};
+
+/**
+ * @param {MapField} field
+ * @returns {boolean}
+ */
+Map.prototype.isFieldBorder = function(field) {
+    return field.x == 0 || field.y == 0 || field.x == this.xfields - 1 || field.y == this.yfields - 1;
+};
+
+/**
+ * @returns {MapField}
+ */
+Map.prototype.getRandomField = function() {
+    return this.fields[Math.floor(Math.random() * this.fields.length)][Math.floor(Math.random() * this.fields.length)];
 };

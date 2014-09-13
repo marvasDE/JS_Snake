@@ -11,6 +11,7 @@
             var main;
             var map;
             var timer;
+            var game;
 
             var params = {
                 fieldHeight: 20,
@@ -20,7 +21,7 @@
             };
 
             $(document).ready(function() {
-                snake();
+                game = new Snake();
             });
 
 
@@ -33,22 +34,6 @@
 
             }
 
-
-            function snake() {
-                map = new Map(params);
-
-                map.getBorderFields().forEach(function(field) {
-                    field.setColor('gray');
-                    field.refreshCSS();
-                });
-
-                /*
-                 for (var borderId in map.getBorderFields()) {
-                 map.getField(borderId).setColor('gray');
-                 map.getField(borderId).refreshCSS();
-                 }
-                 */
-            }
 
         </script>
     </head>

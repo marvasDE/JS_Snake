@@ -5,9 +5,14 @@
  * @param height {number}
  * @param width {number}
  */
-function MapField(x, y, height, width) {
+function MapField(x, y, height, width, id) {
 
-    this.id = 'field_' + x + '_' + y;
+    if (id) {
+        this.id = id;
+    } else {
+        this.id = this.constructor.name + '_' + x + '_' + y + '_' + new Date().getTime();
+    }
+
     this.x = x;
     this.y = y;
 
@@ -21,7 +26,7 @@ function MapField(x, y, height, width) {
     }
 
     this.css = {
-        backgroundColor: 'black',
+        backgroundColor: this.css.backgroundColor ? this.css.backgroundColor : 'black',
         height: this.height,
         left: this.x * this.height,
         position: "absolute",
@@ -29,15 +34,20 @@ function MapField(x, y, height, width) {
         width: this.width
     };
 
-
-    if ($('#field_' + x + '_' + y).length == 0) {
+    if ($('#' + this.constructor.name).length == 0) {
         $('<div/>', {
-            id: this.id,
-            title: 'X: ' + x + ' , Y:' + y,
-            text: '',
-            css: this.css
+            id: this.constructor.name
         }).appendTo('body');
     }
+
+    //if ($('#' + this.id).length == 0) {
+    $('<div/>', {
+        id: this.id,
+        title: 'X: ' + x + ' , Y:' + y,
+        text: '',
+        css: this.css
+    }).appendTo('#' + this.constructor.name);
+    //}
 
 }
 
@@ -56,6 +66,11 @@ MapField.prototype.height = 50;
  * @type {number|null}
  */
 MapField.prototype.width = 50;
+
+/**
+ * @type {object}
+ */
+MapField.prototype.css = {};
 
 /**
  * @description refrehs the css of a dom element with this.css
