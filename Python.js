@@ -1,5 +1,3 @@
-//goog.provide('MapField');
-
 /**
  * @constructor
  * @param {MapField} field
@@ -36,6 +34,9 @@ Python.prototype.goRight = function() {
     this.refreshCSS();
 };
 
+/**
+ * @returns {Python}
+ */
 Python.prototype.clone = function() {
     return new Python(this);
 };

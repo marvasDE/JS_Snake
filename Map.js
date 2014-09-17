@@ -85,8 +85,8 @@ Map.prototype.borderFields = null;
  * @param {number} id
  * @return {MapField}
  */
-Map.prototype.getField = function(id) {
-    return this.fields[id];
+Map.prototype.getField = function(x, y) {
+    return this.fields[y][x];
 };
 
 /**
