@@ -1,3 +1,5 @@
+goog.require('de.marvas.engine.Mapfield');
+
 /**
  * @constructor
  * @param {MapField} field

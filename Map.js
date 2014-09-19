@@ -1,3 +1,5 @@
+goog.provide('de.marvas.engine.Map');
+
 /**
  * @constructor Map
  * @parama {object} params
@@ -149,7 +151,7 @@ Map.prototype.getBorderFields = function() {
  * @returns {boolean}
  */
 Map.prototype.isFieldBorder = function(field) {
-    return field.x == 0 || field.y == 0 || field.x == this.xfields - 1 || field.y == this.yfields - 1;
+    return field.x === 0 || field.y === 0 || field.x === this.xfields - 1 || field.y === this.yfields - 1;
 };
 
 /**
@@ -157,4 +159,17 @@ Map.prototype.isFieldBorder = function(field) {
  */
 Map.prototype.getRandomField = function() {
     return this.fields[Math.floor(Math.random() * this.fields.length)][Math.floor(Math.random() * this.fields.length)];
+};
+
+/**
+ * @returns {Mapfield}
+ */
+Map.prototype.getRandomInnerField = function() {
+    var randomField;
+    do {
+        randomField = this.getRandomField();
+    }
+    while (this.isFieldBorder(randomField));
+
+    return randomField;
 };

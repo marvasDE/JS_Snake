@@ -1,3 +1,5 @@
+goog.provide('de.marvas.engine.Mapfield');
+
 /**
  * @constructor MapField
  * @param x {number}
@@ -19,7 +21,7 @@ function MapField(x, y, height, width, id) {
     if (height) {
         this.height = height;
     }
-    ;
+
 
     if (width) {
         this.width = width;
@@ -34,7 +36,7 @@ function MapField(x, y, height, width, id) {
         width: this.width
     };
 
-    if ($('#' + this.constructor.name).length == 0) {
+    if ($('#' + this.constructor.name).length === 0) {
         $('<div/>', {
             id: this.constructor.name
         }).appendTo('body');
@@ -99,4 +101,26 @@ MapField.prototype.getJQueryObject = function() {
 
 MapField.prototype.setColor = function(color) {
     this.css.backgroundColor = color;
+};
+
+
+/**
+ * @param {MapField} field
+ * @returns {boolean}
+ */
+MapField.prototype.isSamePosition = function(field) {
+    return this.x === field.x && this.y === field.y;
+};
+
+/**
+ * @param {MapField} field
+ * @returns {boolean}
+ */
+MapField.prototype.isDifferentPosition = function(field) {
+    return !this.isSamePosition(field);
+};
+
+
+MapField.prototype.destroyDOM = function() {
+    this.getJQueryObject().remove();
 };

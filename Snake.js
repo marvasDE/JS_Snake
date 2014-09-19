@@ -1,3 +1,6 @@
+goog.require('de.marvas.engine.Map');
+goog.require('de.marvas.engine.examples.Snake.Apple');
+
 /**
  * @constructor
  */
@@ -17,21 +20,13 @@ function Snake() {
         field.refreshCSS();
     });
 
-
-    var head;
-    do {
-        head = this.map.getRandomField();
-    }
-    while (this.map.isFieldBorder(head));
-
+    // generate head
+    var head = this.map.getRandomInnerField();
     this.snakeArray = [new Python(head)];
 
-//    var dropField;
-//    do {
-//        dropField = this.map.getRandomField();
-//    } while (this.map.isFieldBorder(dropField));
-//
-//    this.drop = new Drop(dropField);
+
+    // experimentell
+    this.generateApple();
 
 }
 
@@ -41,16 +36,39 @@ function Snake() {
 Snake.prototype.map = null;
 
 /**
+ * @type {Apple}
+ */
+Snake.prototype.apple = null;
+
+/**
  * @type {Array}
  */
 Snake.prototype.snakeArray = null;
+
+/**
+ * @private
+ * @type {number}
+ */
+Snake.prototype.pythonLength = 4;
 
 /**
  * @type {string}
  */
 Snake.prototype.direction = null;
 
+/**
+ * generates an random apple
+ */
+Snake.prototype.generateApple = function() {
+    var appleField = this.map.getRandomInnerField();
+    this.apple = new Apple(appleField);
+};
 
+Snake.prototype.eatApple = function() {
+    this.apple.destroyDOM();
+    this.generateApple();
+    this.pythonLength++;
+};
 
 Snake.prototype.goTop = function() {
 
@@ -61,7 +79,11 @@ Snake.prototype.goTop = function() {
             head.goTop();
         });
 
-        this.removeTail();
+        if (nextField.isDifferentPosition(this.apple)) {
+            this.removeTail();
+        } else {
+            this.eatApple();
+        }
     } else {
         // $('body').append('<div style="position:absolute; z-index:22222222222; top: 25%; left: 25%; font-size: 150px; font-family: mono; color: white;">GAME OVER</div>');
     }
@@ -77,7 +99,11 @@ Snake.prototype.goBottom = function() {
             head.goBottom();
         });
 
-        this.removeTail();
+        if (nextField.isDifferentPosition(this.apple)) {
+            this.removeTail();
+        } else {
+            this.eatApple();
+        }
     }
 };
 
@@ -91,7 +117,11 @@ Snake.prototype.goLeft = function() {
             head.goLeft();
         });
 
-        this.removeTail();
+        if (nextField.isDifferentPosition(this.apple)) {
+            this.removeTail();
+        } else {
+            this.eatApple();
+        }
     }
 
 };
@@ -104,7 +134,12 @@ Snake.prototype.goRight = function() {
         this.extendsHead(function(head) {
             head.goRight();
         });
-        this.removeTail();
+
+        if (nextField.isDifferentPosition(this.apple)) {
+            this.removeTail();
+        } else {
+            this.eatApple();
+        }
     }
 
 };
@@ -127,8 +162,8 @@ Snake.prototype.extendsHead = function(post_processing) {
 };
 
 Snake.prototype.removeTail = function() {
-    if (this.snakeArray.length > 4) {
-        this.snakeArray[this.snakeArray.length - 1].getJQueryObject().remove();
+    if (this.snakeArray.length > this.pythonLength) {
+        this.snakeArray[this.snakeArray.length - 1].destroyDOM();
         this.snakeArray.pop();
     }
 };
