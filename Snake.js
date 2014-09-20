@@ -78,6 +78,18 @@ Snake.prototype.eatApple = function() {
     this.pythonLength++;
 };
 
+/**
+ * @private
+ * @param {MapField} nextField
+ */
+Snake.prototype.goPostProcessing = function(nextField) {
+    if (nextField.isDifferentPosition(this.apple)) {
+        this.removeTail();
+    } else {
+        this.eatApple();
+    }
+};
+
 Snake.prototype.goTop = function() {
 
     this.forward = this.goTop;
@@ -89,11 +101,8 @@ Snake.prototype.goTop = function() {
             head.goTop();
         });
 
-        if (nextField.isDifferentPosition(this.apple)) {
-            this.removeTail();
-        } else {
-            this.eatApple();
-        }
+        this.goPostProcessing(nextField);
+
     } else {
         // $('body').append('<div style="position:absolute; z-index:22222222222; top: 25%; left: 25%; font-size: 150px; font-family: mono; color: white;">GAME OVER</div>');
     }
@@ -111,11 +120,7 @@ Snake.prototype.goBottom = function() {
             head.goBottom();
         });
 
-        if (nextField.isDifferentPosition(this.apple)) {
-            this.removeTail();
-        } else {
-            this.eatApple();
-        }
+        this.goPostProcessing(nextField);
     }
 };
 
@@ -131,11 +136,7 @@ Snake.prototype.goLeft = function() {
             head.goLeft();
         });
 
-        if (nextField.isDifferentPosition(this.apple)) {
-            this.removeTail();
-        } else {
-            this.eatApple();
-        }
+        this.goPostProcessing(nextField);
     }
 
 };
@@ -151,11 +152,7 @@ Snake.prototype.goRight = function() {
             head.goRight();
         });
 
-        if (nextField.isDifferentPosition(this.apple)) {
-            this.removeTail();
-        } else {
-            this.eatApple();
-        }
+        this.goPostProcessing(nextField);
     }
 
 };
@@ -168,6 +165,7 @@ Snake.prototype.getHead = function() {
 };
 
 /**
+ * @private
  * @param {function(MapField)} post_processing
  */
 Snake.prototype.extendsHead = function(post_processing) {
@@ -177,6 +175,9 @@ Snake.prototype.extendsHead = function(post_processing) {
     post_processing(head);
 };
 
+/**
+ * @private
+ */
 Snake.prototype.removeTail = function() {
     if (this.pythonArray.length > this.pythonLength) {
         this.pythonArray[this.pythonArray.length - 1].destroyDOM();
