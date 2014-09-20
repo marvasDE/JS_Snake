@@ -2,7 +2,7 @@ goog.provide('de.marvas.engine.Map');
 
 /**
  * @constructor Map
- * @parama {object} params
+ * @param {object} params
  */
 function Map(params) {
 

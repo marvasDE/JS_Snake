@@ -58,7 +58,7 @@ Snake.prototype.direction = null;
 
 /**
  *
- * @type {function}
+ * @type {function()}
  */
 Snake.prototype.forward = null;
 
@@ -166,7 +166,7 @@ Snake.prototype.getHead = function() {
 };
 
 /**
- * @param {function} post_processing
+ * @param {function()} post_processing
  */
 Snake.prototype.extendsHead = function(post_processing) {
     var head = this.getHead().clone();

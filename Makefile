@@ -1,21 +1,27 @@
-all: rm-all compile-all
-
-compile-all: compile-engine compile-extern
-
-engine: rm-engine compile-engine
-extern: rm-extern compile-extern
-
-compile-engine:	
-	java -jar bin/compiler.jar --js *.js --js_output_file bin/compiled.js
-
-compile-extern:
-	java -jar bin/compiler.jar --js libs/*.js --js_output_file bin/extern.js
+all: rebuild
 
 
-rm-all: rm-engine rm-extern
+build: build-libs build-engine
 
-rm-engine:
-	rm bin/compiled.js
+build-engine:	
+	java -jar bin/compiler.jar --externs externs/jquery-1.9.js --warning_level VERBOSE --js *.js --js_output_file bin/compiled.js
+
+build-libs:
+	java -jar bin/compiler.jar --externs externs/jquery-1.9.js --js libs/*.js --js_output_file bin/extern.js
+
+
+rebuild: clean build
+
+rebuild-engine: clean-engine build-engine
+
+rebuild-libs: clean-libs build-libs
+
+
+
+clean: clean-engine clean-libs
+
+clean-engine:
+	rm -f bin/compiled.js
 	
-rm-extern:
-	rm bin/extern.js
+clean-libs:
+	rm -f bin/extern.js
