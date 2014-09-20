@@ -75,16 +75,33 @@ MapField.prototype.width = 50;
 MapField.prototype.css = {};
 
 /**
+ * @type {object}
+ */
+MapField.prototype.jQueryObject = null;
+
+
+/**
+ * @param {string} color
+ */
+MapField.prototype.setColor = function(color) {
+    this.css.backgroundColor = color;
+};
+
+
+/**
+ * @param {object} cssObject
+ */
+MapField.prototype.extendsCSS = function(cssObject) {
+    $.extend(this.css, cssObject);
+    this.refreshCSS();
+};
+
+/**
  * @description refrehs the css of a dom element with this.css
  */
 MapField.prototype.refreshCSS = function() {
     this.getJQueryObject().css(this.css);
 };
-
-/**
- * @type {object}
- */
-MapField.prototype.jQueryObject = null;
 
 /**
  * @return {object}
@@ -97,10 +114,6 @@ MapField.prototype.getJQueryObject = function() {
     ;
 
     return this.jQueryObject;
-};
-
-MapField.prototype.setColor = function(color) {
-    this.css.backgroundColor = color;
 };
 
 

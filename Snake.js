@@ -22,7 +22,7 @@ function Snake() {
 
     // generate head
     var head = this.map.getRandomInnerField();
-    this.snakeArray = [new Python(head)];
+    this.pythonArray = [new Python(head)];
 
 
     // experimentell
@@ -43,7 +43,7 @@ Snake.prototype.apple = null;
 /**
  * @type {Array}
  */
-Snake.prototype.snakeArray = null;
+Snake.prototype.pythonArray = null;
 
 /**
  * @private
@@ -55,6 +55,12 @@ Snake.prototype.pythonLength = 4;
  * @type {string}
  */
 Snake.prototype.direction = null;
+
+/**
+ *
+ * @type {function}
+ */
+Snake.prototype.forward = null;
 
 /**
  * generates an random apple
@@ -71,6 +77,8 @@ Snake.prototype.eatApple = function() {
 };
 
 Snake.prototype.goTop = function() {
+
+    this.forward = this.goTop;
 
     var nextField = this.map.getField(this.getHead().x, this.getHead().y - 1);
 
@@ -91,6 +99,8 @@ Snake.prototype.goTop = function() {
 
 Snake.prototype.goBottom = function() {
 
+    this.forward = this.goBottom;
+
     var nextField = this.map.getField(this.getHead().x, this.getHead().y + 1);
 
     if (!this.map.isFieldBorder(nextField)) {
@@ -108,6 +118,8 @@ Snake.prototype.goBottom = function() {
 };
 
 Snake.prototype.goLeft = function() {
+
+    this.forward = this.goLeft;
 
     var nextField = this.map.getField(this.getHead().x - 1, this.getHead().y);
 
@@ -127,6 +139,8 @@ Snake.prototype.goLeft = function() {
 };
 
 Snake.prototype.goRight = function() {
+
+    this.forward = this.goRight;
 
     var nextField = this.map.getField(this.getHead().x + 1, this.getHead().y);
 
@@ -148,7 +162,7 @@ Snake.prototype.goRight = function() {
  * @returns {Python}
  */
 Snake.prototype.getHead = function() {
-    return this.snakeArray[0];
+    return this.pythonArray[0];
 };
 
 /**
@@ -156,15 +170,15 @@ Snake.prototype.getHead = function() {
  */
 Snake.prototype.extendsHead = function(post_processing) {
     var head = this.getHead().clone();
-    this.snakeArray.unshift(head);
+    this.pythonArray.unshift(head);
 
     post_processing(head);
 };
 
 Snake.prototype.removeTail = function() {
-    if (this.snakeArray.length > this.pythonLength) {
-        this.snakeArray[this.snakeArray.length - 1].destroyDOM();
-        this.snakeArray.pop();
+    if (this.pythonArray.length > this.pythonLength) {
+        this.pythonArray[this.pythonArray.length - 1].destroyDOM();
+        this.pythonArray.pop();
     }
 };
 
@@ -172,7 +186,7 @@ Snake.prototype.removeTail = function() {
  * @returns {number}
  */
 Snake.prototype.getLength = function() {
-    return this.snakeArray.length;
+    return this.pythonArray.length;
 };
 
 
@@ -182,12 +196,25 @@ Snake.prototype.loadControls = function() {
 
         if (event.keyCode === 38) {
             this.goTop();
+
         } else if (event.keyCode === 37) {
             this.goLeft();
+
         } else if (event.keyCode === 40) {
             this.goBottom();
+
         } else if (event.keyCode === 39) {
             this.goRight();
+        }
+
+        if (!this.timer) {
+
+            if (this.forward && this.forward !== null) {
+                this.timer = setInterval(function() {
+                    this.forward();
+                }.bind(this), 750);
+            }
+
         }
 
     }.bind(this);

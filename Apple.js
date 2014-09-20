@@ -6,8 +6,13 @@ goog.provide('de.marvas.engine.examples.Snake.Apple');
  * @param {MapField} field
  */
 function Apple(field) {
-    this.setColor('yellow');
     MapField.call(this, field.x, field.y, field.height, field.width);
+
+    this.setColor('yellow');
+    this.extendsCSS({
+        border: '2px solid red',
+        borderRadius: '20%'
+    });
 }
 
 Apple.prototype = new MapField;
