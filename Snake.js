@@ -52,13 +52,13 @@ Snake.prototype.pythonArray = null;
 Snake.prototype.pythonLength = 4;
 
 /**
- * @type {string}
+ * @type {string|null}
  */
 Snake.prototype.direction = null;
 
 /**
  *
- * @type {function()}
+ * @type {function()|null}
  */
 Snake.prototype.forward = null;
 
@@ -166,7 +166,7 @@ Snake.prototype.getHead = function() {
 };
 
 /**
- * @param {function()} post_processing
+ * @param {function(MapField)} post_processing
  */
 Snake.prototype.extendsHead = function(post_processing) {
     var head = this.getHead().clone();

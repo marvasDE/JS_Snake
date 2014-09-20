@@ -2,31 +2,31 @@ goog.provide('de.marvas.engine.Map');
 
 /**
  * @constructor Map
- * @param {object} params
+ * @param {Object=} params
  */
 function Map(params) {
 
     if (params) {
         if (params.fieldHeight) {
-            this.fieldHeight = parseInt(params.fieldHeight);
+            this.fieldHeight = parseInt(params.fieldHeight, 10);
         }
 
         if (params.fieldWidth) {
-            this.fieldWidth = parseInt(params.fieldWidth);
+            this.fieldWidth = parseInt(params.fieldWidth, 10);
         }
 
         if (params.height) {
-            this.height = parseInt(params.height);
+            this.height = parseInt(params.height, 10);
         }
 
         if (params.width) {
-            this.width = parseInt(params.width);
+            this.width = parseInt(params.width, 10);
         }
 
     }
 
-    this.yfields = parseInt(this.height / this.fieldHeight);
-    this.xfields = parseInt(this.width / this.fieldWidth);
+    this.yfields = parseInt(this.height / this.fieldHeight, 10);
+    this.xfields = parseInt(this.width / this.fieldWidth, 10);
 
     for (var y = 0; y < this.yfields; y++) {
         var temp_array = [];
@@ -42,18 +42,18 @@ function Map(params) {
 
 
 /**
- * @type {array}
+ * @type {Array}
  */
 Map.prototype.fields = [];
 
 
 /**
- * @type {number}
+ * @type {jQuery|number}
  */
 Map.prototype.height = $(window).height();
 
 /**
- * @type {number|null}
+ * @type {jQuery|number}
  */
 Map.prototype.width = $(window).width();
 
@@ -78,13 +78,14 @@ Map.prototype.xfields = null;
 Map.prototype.yfields = null;
 
 /**
- * @type {array|null}
+ * @type {Array|null}
  */
 Map.prototype.borderFields = null;
 
 
 /**
- * @param {number} id
+ * @param {number} x
+ * @param {number} y
  * @return {MapField}
  */
 Map.prototype.getField = function(x, y) {
@@ -162,7 +163,7 @@ Map.prototype.getRandomField = function() {
 };
 
 /**
- * @returns {Mapfield}
+ * @returns {MapField}
  */
 Map.prototype.getRandomInnerField = function() {
     var randomField;

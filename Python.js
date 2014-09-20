@@ -3,6 +3,7 @@ goog.require('de.marvas.engine.Mapfield');
 /**
  * @constructor
  * @param {MapField} field
+ * @extends {MapField}
  */
 function Python(field) {
     this.css.backgroundColor = 'white';

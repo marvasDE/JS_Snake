@@ -2,10 +2,11 @@ goog.provide('de.marvas.engine.Mapfield');
 
 /**
  * @constructor MapField
- * @param x {number}
- * @param y {number}
- * @param height {number}
- * @param width {number}
+ * @param {number} x
+ * @param {number} y
+ * @param {number} height
+ * @param {number} width
+ * @param {string=} id
  */
 function MapField(x, y, height, width, id) {
 
@@ -50,32 +51,31 @@ function MapField(x, y, height, width, id) {
         css: this.css
     }).appendTo('#' + this.constructor.name);
     //}
-
 }
 
 /**
  * @private
- * @type {number|null}
+ * @type {string|null}
  */
 MapField.prototype.id = null;
 
 /**
- * @type {number|null}
+ * @type {number}
  */
 MapField.prototype.height = 50;
 
 /**
- * @type {number|null}
+ * @type {number}
  */
 MapField.prototype.width = 50;
 
 /**
- * @type {object}
+ * @type {Object}
  */
 MapField.prototype.css = {};
 
 /**
- * @type {object}
+ * @type {Object}
  */
 MapField.prototype.jQueryObject = null;
 
@@ -89,7 +89,7 @@ MapField.prototype.setColor = function(color) {
 
 
 /**
- * @param {object} cssObject
+ * @param {Object} cssObject
  */
 MapField.prototype.extendsCSS = function(cssObject) {
     $.extend(this.css, cssObject);
@@ -104,7 +104,7 @@ MapField.prototype.refreshCSS = function() {
 };
 
 /**
- * @return {object}
+ * @return {Object}
  */
 MapField.prototype.getJQueryObject = function() {
 
