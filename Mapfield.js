@@ -4,8 +4,8 @@ goog.provide('de.marvas.engine.Mapfield');
  * @constructor MapField
  * @param {number} x
  * @param {number} y
- * @param {number} height
- * @param {number} width
+ * @param {number=} height
+ * @param {number=} width
  * @param {string=} id
  */
 function MapField(x, y, height, width, id) {
@@ -29,7 +29,7 @@ function MapField(x, y, height, width, id) {
     }
 
     this.css = {
-        backgroundColor: this.css.backgroundColor ? this.css.backgroundColor : 'black',
+        backgroundColor: 'black',
         height: this.height,
         left: this.x * this.height,
         position: "absolute",

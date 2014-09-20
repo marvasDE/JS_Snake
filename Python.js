@@ -6,8 +6,9 @@ goog.require('de.marvas.engine.Mapfield');
  * @extends {MapField}
  */
 function Python(field) {
-    this.css.backgroundColor = 'white';
     MapField.call(this, field.x, field.y, field.height, field.width);
+    this.setColor('white');
+    this.refreshCSS();
 }
 
 Python.prototype = new MapField;

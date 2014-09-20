@@ -1,11 +1,17 @@
+goog.require('de.marvas.engine.examples.Snake');
 /**
-* @constructor
-*/
+ * @constructor
+ */
 function Main() {
-	this.map = new Map();
+    this.game = new Snake();
+    this.game.loadControls();
 }
 
 /**
-* @type {Map}
-*/
-Main.prototype.map = null;
+ * @type {Snake|null}
+ */
+Main.prototype.game = null;
+
+$(document).ready(function() {
+    var main = new Main();
+});

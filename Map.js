@@ -28,6 +28,7 @@ function Map(params) {
     this.yfields = parseInt(this.height / this.fieldHeight, 10);
     this.xfields = parseInt(this.width / this.fieldWidth, 10);
 
+    this.fields = [];
     for (var y = 0; y < this.yfields; y++) {
         var temp_array = [];
 
@@ -42,7 +43,7 @@ function Map(params) {
 
 
 /**
- * @type {Array}
+ * @type {Array.<Array>}
  */
 Map.prototype.fields = [];
 

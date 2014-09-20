@@ -3,40 +3,7 @@
     <head>
         <title>JS</title>
         <script type="text/javascript" src="bin/extern.js"></script>
-
         <script type="text/javascript" src="bin/compiled.js"></script>	
-
-        <script type="text/javascript">
-
-            var main;
-            var map;
-            var timer;
-            var game;
-
-            var params = {
-                fieldHeight: 20,
-                fieldWidth: 20,
-                height: 500,
-                width: 500
-            };
-
-            $(document).ready(function() {
-                game = new Snake();
-                game.loadControls();
-            });
-
-
-            function randomizer() {
-                map = new Map(params);
-
-                timer = setInterval(function() {
-                    map.random()
-                }, 100);
-
-            }
-
-
-        </script>
     </head>
 
     <body>

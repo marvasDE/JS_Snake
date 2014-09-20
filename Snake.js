@@ -1,6 +1,8 @@
 goog.require('de.marvas.engine.Map');
 goog.require('de.marvas.engine.examples.Snake.Apple');
 
+goog.provide('de.marvas.engine.examples.Snake');
+
 /**
  * @constructor
  */
