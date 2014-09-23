@@ -1,4 +1,5 @@
 goog.require('de.marvas.engine.Mapfield');
+goog.provide('de.marvas.engine.examples.Snake.Python');
 
 /**
  * @constructor

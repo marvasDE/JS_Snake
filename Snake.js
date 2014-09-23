@@ -1,6 +1,6 @@
 goog.require('de.marvas.engine.Map');
 goog.require('de.marvas.engine.examples.Snake.Apple');
-
+goog.require('de.marvas.engine.examples.Snake.Python');
 goog.provide('de.marvas.engine.examples.Snake');
 
 /**
@@ -43,7 +43,7 @@ Snake.prototype.map = null;
 Snake.prototype.apple = null;
 
 /**
- * @type {Array}
+ * @type {Array.<Python>}
  */
 Snake.prototype.pythonArray = null;
 
@@ -54,15 +54,30 @@ Snake.prototype.pythonArray = null;
 Snake.prototype.pythonLength = 4;
 
 /**
- * @type {string|null}
+ * @enum {number}
  */
-Snake.prototype.direction = null;
+Snake.prototype.direction = {
+    TOP: 0,
+    BOTTOM: 1,
+    LEFT: 2,
+    RIGHT: 3
+};
+
+/**
+ * @type {number|null}
+ */
+Snake.prototype.currentDirection = null;
 
 /**
  *
  * @type {function()|null}
  */
 Snake.prototype.forward = null;
+
+/**
+ * @type {number}
+ */
+Snake.prototype.eatenApples = 0;
 
 /**
  * generates an random apple
@@ -76,6 +91,14 @@ Snake.prototype.eatApple = function() {
     this.apple.destroyDOM();
     this.generateApple();
     this.pythonLength++;
+
+    this.eatenApples++;
+
+    if ($('#points').length === 0) {
+        $('body').append('<div id="points" style="position: absolute;top: 50%; left: 500px;"></div>');
+    }
+
+    $('#points').html('<span style="color: green; font-size: 40pt;">Du hast <span style="color: red; font-size: 80pt;">' + this.eatenApples + '</span> &Auml;pfel gegessen! :)</span>');
 };
 
 /**
@@ -90,13 +113,46 @@ Snake.prototype.goPostProcessing = function(nextField) {
     }
 };
 
-Snake.prototype.goTop = function() {
+/**
+ * @param {MapField} nextField
+ * @returns {boolean}
+ */
+Snake.prototype.isBadField = function(nextField) {
 
-    this.forward = this.goTop;
+    var checkSnakePosition = false;
+
+    if (this.pythonArray && this.pythonArray.length > 0) {
+
+//        for (var i in this.pythonArray) {
+//            if (checkSnakePosition || this.pythonArray[i].isSamePosition(nextField)) {
+//                checkSnakePosition = true;
+//            }
+//        }
+
+        this.pythonArray.forEach(function(field) {
+            if (checkSnakePosition || nextField.isSamePosition(field)) {
+                checkSnakePosition = true;
+            }
+        });
+    }
+
+    return checkSnakePosition || this.map.isFieldBorder(nextField);
+};
+
+Snake.prototype.die = function() {
+    document.onkeydown = function(event) {
+    };
+    clearInterval(this.timer);
+    this.forward = null; // error
+    this.currentDirection = null; // error
+    $('body').append('<div style="position:absolute; z-index:22222222222; top: 25%; left: 2%; font-size: 80px; font-family: mono; color: white;">GAME OVER</div>');
+};
+
+Snake.prototype.goTop = function() {
 
     var nextField = this.map.getField(this.getHead().x, this.getHead().y - 1);
 
-    if (!this.map.isFieldBorder(nextField)) {
+    if (!this.isBadField(nextField)) {
         this.extendsHead(function(head) {
             head.goTop();
         });
@@ -104,55 +160,55 @@ Snake.prototype.goTop = function() {
         this.goPostProcessing(nextField);
 
     } else {
-        // $('body').append('<div style="position:absolute; z-index:22222222222; top: 25%; left: 25%; font-size: 150px; font-family: mono; color: white;">GAME OVER</div>');
+        this.die();
     }
 };
 
 Snake.prototype.goBottom = function() {
 
-    this.forward = this.goBottom;
-
     var nextField = this.map.getField(this.getHead().x, this.getHead().y + 1);
 
-    if (!this.map.isFieldBorder(nextField)) {
+    if (!this.isBadField(nextField)) {
 
         this.extendsHead(function(head) {
             head.goBottom();
         });
 
         this.goPostProcessing(nextField);
+    } else {
+        this.die();
     }
 };
 
 Snake.prototype.goLeft = function() {
 
-    this.forward = this.goLeft;
-
     var nextField = this.map.getField(this.getHead().x - 1, this.getHead().y);
 
-    if (!this.map.isFieldBorder(nextField)) {
+    if (!this.isBadField(nextField)) {
 
         this.extendsHead(function(head) {
             head.goLeft();
         });
 
         this.goPostProcessing(nextField);
+    } else {
+        this.die();
     }
 
 };
 
 Snake.prototype.goRight = function() {
 
-    this.forward = this.goRight;
-
     var nextField = this.map.getField(this.getHead().x + 1, this.getHead().y);
 
-    if (!this.map.isFieldBorder(nextField)) {
+    if (!this.isBadField(nextField)) {
         this.extendsHead(function(head) {
             head.goRight();
         });
 
         this.goPostProcessing(nextField);
+    } else {
+        this.die();
     }
 
 };
@@ -198,24 +254,35 @@ Snake.prototype.loadControls = function() {
     document.onkeydown = function(event) {
 
         if (event.keyCode === 38) {
-            this.goTop();
-
+            if (this.currentDirection !== this.direction.BOTTOM) {
+                this.forward = this.goTop;
+                this.currentDirection = this.direction.TOP;
+            }
         } else if (event.keyCode === 37) {
-            this.goLeft();
+            if (this.currentDirection !== this.direction.RIGHT) {
+                this.forward = this.goLeft;
+                this.currentDirection = this.direction.LEFT;
+            }
 
         } else if (event.keyCode === 40) {
-            this.goBottom();
+            if (this.currentDirection !== this.direction.TOP) {
+                this.forward = this.goBottom;
+                this.currentDirection = this.direction.BOTTOM;
+            }
 
         } else if (event.keyCode === 39) {
-            this.goRight();
+            if (this.currentDirection !== this.direction.LEFT) {
+                this.forward = this.goRight;
+                this.currentDirection = this.direction.RIGHT;
+            }
         }
 
         if (!this.timer) {
 
-            if (this.forward && this.forward !== null) {
+            if (this.currentDirection !== null && this.forward) {
                 this.timer = setInterval(function() {
                     this.forward();
-                }.bind(this), 750);
+                }.bind(this), 200);
             }
 
         }
