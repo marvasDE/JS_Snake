@@ -11,7 +11,12 @@ function Main() {
  * @type {Snake|null}
  */
 Main.prototype.game = null;
+ 
+/**
+ * @type {Main}
+ */
+var main = null;
 
 $(document).ready(function() {
-    var main = new Main();
+    main = new Main();
 });

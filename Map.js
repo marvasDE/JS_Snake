@@ -1,4 +1,5 @@
 goog.provide('de.marvas.engine.Map');
+goog.require('de.marvas.engine.MapfieldStorage');
 
 /**
  * @constructor Map
@@ -25,27 +26,29 @@ function Map(params) {
 
     }
 
-    this.yfields = parseInt(this.height / this.fieldHeight, 10);
+
     this.xfields = parseInt(this.width / this.fieldWidth, 10);
+    this.yfields = parseInt(this.height / this.fieldHeight, 10);
 
-    this.fields = [];
-    for (var y = 0; y < this.yfields; y++) {
-        var temp_array = [];
 
-        for (var x = 0; x < this.xfields; x++) {
-            temp_array.push(new MapField(x, y, this.fieldHeight, this.fieldWidth));
+    this.fields = new MapfieldStorage();
+    for (var x = 0; x < this.xfields; x++) {
+//        var temp_array = [];
+
+        for (var y = 0; y < this.yfields; y++) {
+            this.fields.add(new MapField(x, y, this.fieldHeight, this.fieldWidth));
         }
 
-        this.fields.push(temp_array);
+//        this.fields.push(temp_array);
     }
 
 }
 
 
 /**
- * @type {Array.<Array>}
+ * @type {MapfieldStorage}
  */
-Map.prototype.fields = [];
+Map.prototype.fields = new MapfieldStorage();
 
 
 /**
@@ -90,21 +93,17 @@ Map.prototype.borderFields = null;
  * @return {MapField}
  */
 Map.prototype.getField = function(x, y) {
-    return this.fields[y][x];
+    return this.fields.getField(x, y);
 };
 
 /**
  * @description set random background-color for all fields
  */
 Map.prototype.random = function() {
-    this.fields.forEach(function(fieldArrays) {
+    this.fields.simpleList.forEach(function(field) {
 
-        fieldArrays.forEach(function(field) {
-
-            field.setColor(this.getRandomColor());
-            field.refreshCSS();
-
-        }.bind(this));
+        field.setColor(this.getRandomColor());
+        field.refreshCSS();
 
     }.bind(this));
 };
@@ -129,16 +128,11 @@ Map.prototype.getBorderFields = function() {
 
         this.borderFields = [];
 
-        this.fields.forEach(function(fieldArrays) {
+        this.fields.simpleList.forEach(function(field) {
 
-            fieldArrays.forEach(function(field) {
-
-                if (this.isFieldBorder(field)) {
-                    this.borderFields.push(field);
-                }
-
-            }.bind(this));
-
+            if (this.isFieldBorder(field)) {
+                this.borderFields.push(field);
+            }
 
         }.bind(this));
 
@@ -153,6 +147,9 @@ Map.prototype.getBorderFields = function() {
  * @returns {boolean}
  */
 Map.prototype.isFieldBorder = function(field) {
+    if (!field) {
+        return false;
+    }
     return field.x === 0 || field.y === 0 || field.x === this.xfields - 1 || field.y === this.yfields - 1;
 };
 
@@ -160,7 +157,7 @@ Map.prototype.isFieldBorder = function(field) {
  * @returns {MapField}
  */
 Map.prototype.getRandomField = function() {
-    return this.fields[Math.floor(Math.random() * this.fields.length)][Math.floor(Math.random() * this.fields.length)];
+    return this.fields.gridList[Math.floor(Math.random() * this.xfields)][Math.floor(Math.random() * this.yfields)];
 };
 
 /**

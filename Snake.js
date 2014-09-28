@@ -24,7 +24,7 @@ function Snake() {
 
     // generate head
     var head = this.map.getRandomInnerField();
-    this.pythonArray = [new Python(head)];
+    this.pythonArray.add(new Python(head));
 
 
     // experimentell
@@ -43,9 +43,9 @@ Snake.prototype.map = null;
 Snake.prototype.apple = null;
 
 /**
- * @type {Array.<Python>}
+ * @type {MapfieldStorage}
  */
-Snake.prototype.pythonArray = null;
+Snake.prototype.pythonArray = new MapfieldStorage();
 
 /**
  * @private
@@ -119,24 +119,9 @@ Snake.prototype.goPostProcessing = function(nextField) {
  */
 Snake.prototype.isBadField = function(nextField) {
 
-    var checkSnakePosition = false;
+    var checkSnakePosition = this.pythonArray.getField(nextField.x, nextField.y);
 
-    if (this.pythonArray && this.pythonArray.length > 0) {
-
-//        for (var i in this.pythonArray) {
-//            if (checkSnakePosition || this.pythonArray[i].isSamePosition(nextField)) {
-//                checkSnakePosition = true;
-//            }
-//        }
-
-        this.pythonArray.forEach(function(field) {
-            if (checkSnakePosition || nextField.isSamePosition(field)) {
-                checkSnakePosition = true;
-            }
-        });
-    }
-
-    return checkSnakePosition || this.map.isFieldBorder(nextField);
+    return checkSnakePosition != null || this.map.isFieldBorder(nextField);
 };
 
 Snake.prototype.die = function() {
@@ -217,7 +202,7 @@ Snake.prototype.goRight = function() {
  * @returns {Python}
  */
 Snake.prototype.getHead = function() {
-    return this.pythonArray[0];
+    return this.pythonArray.getFirst();
 };
 
 /**
@@ -235,8 +220,8 @@ Snake.prototype.extendsHead = function(post_processing) {
  * @private
  */
 Snake.prototype.removeTail = function() {
-    if (this.pythonArray.length > this.pythonLength) {
-        this.pythonArray[this.pythonArray.length - 1].destroyDOM();
+    if (this.pythonArray.getLength() > this.pythonLength) {
+        this.pythonArray.getLast().destroyDOM();
         this.pythonArray.pop();
     }
 };
@@ -245,7 +230,7 @@ Snake.prototype.removeTail = function() {
  * @returns {number}
  */
 Snake.prototype.getLength = function() {
-    return this.pythonArray.length;
+    return this.pythonArray.getLength();
 };
 
 
