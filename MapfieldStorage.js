@@ -7,7 +7,7 @@ goog.provide('de.marvas.engine.MapfieldStorage');
 function MapfieldStorage() {
     // not static
     this.simpleList = [];
-    this.gridList = [];
+    this.gridList = {};
 }
 
 /**
@@ -16,9 +16,9 @@ function MapfieldStorage() {
 MapfieldStorage.prototype.simpleList = [];
 
 /**
- * @type {Array.<Array>}
+ * @type {Object}
  */
-MapfieldStorage.prototype.gridList = [];
+MapfieldStorage.prototype.gridList = {};
 
 /**
  * @param {MapField} field
@@ -41,7 +41,7 @@ MapfieldStorage.prototype.push = function(field) {
  */
 MapfieldStorage.prototype.addToGrid = function(field) {
     if (!this.gridList[field.x]) {
-        this.gridList[field.x] = [];
+        this.gridList[field.x] = {};
     }
     this.gridList[field.x][field.y] = field;
 };
@@ -51,10 +51,12 @@ MapfieldStorage.prototype.addToGrid = function(field) {
  * @param {MapField} field
  */
 MapfieldStorage.prototype.removeFromGrid = function(field) {
-    if (!this.gridList[field.x]) {
-        this.gridList[field.x] = [];
+    if (Object.getOwnPropertyNames(this.gridList[field.x]).length === 1) {
+        // clean up before object is empty
+        delete this.gridList[field.x];
+    } else {
+        delete this.gridList[field.x][field.y];
     }
-    this.gridList[field.x][field.y] = null;
 };
 
 /**
