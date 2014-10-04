@@ -1,6 +1,7 @@
 goog.require('de.marvas.engine.Map');
 goog.require('de.marvas.engine.examples.Snake.Apple');
 goog.require('de.marvas.engine.examples.Snake.Python');
+goog.require('de.marvas.engine.Textarea');
 goog.provide('de.marvas.engine.examples.Snake');
 
 /**
@@ -130,7 +131,8 @@ Snake.prototype.die = function() {
     clearInterval(this.timer);
     this.forward = null; // error
     this.currentDirection = null; // error
-    $('body').append('<div style="position:absolute; z-index:22222222222; top: 25%; left: 2%; font-size: 80px; font-family: mono; color: white;">GAME OVER</div>');
+
+    new Textarea("GAME OVER", this.map, 0, Textarea.prototype.align.CENTER, {top: '0%', color: 'white'});
 };
 
 Snake.prototype.goTop = function() {
@@ -138,6 +140,8 @@ Snake.prototype.goTop = function() {
     var nextField = this.map.getField(this.getHead().x, this.getHead().y - 1);
 
     if (!this.isBadField(nextField)) {
+        this.currentDirection = this.direction.TOP;
+
         this.extendsHead(function(head) {
             head.goTop();
         });
@@ -154,6 +158,7 @@ Snake.prototype.goBottom = function() {
     var nextField = this.map.getField(this.getHead().x, this.getHead().y + 1);
 
     if (!this.isBadField(nextField)) {
+        this.currentDirection = this.direction.BOTTOM;
 
         this.extendsHead(function(head) {
             head.goBottom();
@@ -170,6 +175,7 @@ Snake.prototype.goLeft = function() {
     var nextField = this.map.getField(this.getHead().x - 1, this.getHead().y);
 
     if (!this.isBadField(nextField)) {
+        this.currentDirection = this.direction.LEFT;
 
         this.extendsHead(function(head) {
             head.goLeft();
@@ -187,6 +193,8 @@ Snake.prototype.goRight = function() {
     var nextField = this.map.getField(this.getHead().x + 1, this.getHead().y);
 
     if (!this.isBadField(nextField)) {
+        this.currentDirection = this.direction.RIGHT;
+
         this.extendsHead(function(head) {
             head.goRight();
         });
@@ -241,33 +249,29 @@ Snake.prototype.loadControls = function() {
         if (event.keyCode === 38) {
             if (this.currentDirection !== this.direction.BOTTOM) {
                 this.forward = this.goTop;
-                this.currentDirection = this.direction.TOP;
             }
         } else if (event.keyCode === 37) {
             if (this.currentDirection !== this.direction.RIGHT) {
                 this.forward = this.goLeft;
-                this.currentDirection = this.direction.LEFT;
             }
 
         } else if (event.keyCode === 40) {
             if (this.currentDirection !== this.direction.TOP) {
                 this.forward = this.goBottom;
-                this.currentDirection = this.direction.BOTTOM;
             }
 
         } else if (event.keyCode === 39) {
             if (this.currentDirection !== this.direction.LEFT) {
                 this.forward = this.goRight;
-                this.currentDirection = this.direction.RIGHT;
             }
         }
 
         if (!this.timer) {
 
-            if (this.currentDirection !== null && this.forward) {
+            if (this.forward) {
                 this.timer = setInterval(function() {
                     this.forward();
-                }.bind(this), 200);
+                }.bind(this), 150);
             }
 
         }

@@ -72,14 +72,14 @@ Map.prototype.fieldHeight = 50;
 Map.prototype.fieldWidth = 50;
 
 /**
- * @type {number|null}
+ * @type {number}
  */
-Map.prototype.xfields = null;
+Map.prototype.xfields = 0;
 
 /**
- * @type {number|null}
+ * @type {number}
  */
-Map.prototype.yfields = null;
+Map.prototype.yfields = 0;
 
 /**
  * @type {Array|null}
